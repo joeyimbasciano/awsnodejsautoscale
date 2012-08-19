@@ -16,6 +16,20 @@ Run run_siege.sh
 ./run_siege.sh
 ```
 
+Watch the AWS console, instances will be launched and terminated as CPU Utilization changes on primary instance.
+
+### A Typical Run
+
+1. dd processes will start to stack on the first node.
+2. cpu will start to climb, mostly cpusteal because its a t1.micro and that is how AWS throttles those instances.
+3. AutoScaling will kick in and fire up a 2nd instance
+4. dd processes will start to level out on 1st instance
+5. dd processes will still utilize more than 80% cpu
+6. 3rd instance will be fired up
+7. dd processes will be spread evenly over all 3 reducing the load on the 1st instance considerably.
+8. siege ends
+9. instances will start to terminate 1 at a time at 2 mintues in between
+
 ## Triggers for Adding/Removing Resources:
 1. Basic Health Check: A basic HTTP request to / should respond with 200 OK. If it does not, the instance is not considered healthy. This check runs on all instances within the AutoScaling group.
 
@@ -47,8 +61,10 @@ This is a rough outline of what is required to re-create this setup.
 
 This config is used when more nodes are needed for autoscaling.
 
+NOTE: AWS defaults to --monitoring-enabled which means detailed cloudwatch is enabled. Use --monitoring-disabled to avoid additional fees.
+
 ```
-as-create-launch-config nodeload --image-id ami-770bbe1e --instance-type t1.micro --key joeyi --group node_scale
+as-create-launch-config nodeload --image-id ami-770bbe1e --instance-type t1.micro --key joeyi --group node_scale --monitoring-disabled
 ```
 
 #### AutoScaling Group
