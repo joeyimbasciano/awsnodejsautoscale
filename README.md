@@ -16,7 +16,7 @@ Run run_siege.sh
 ./run_siege.sh
 ```
 
-## Triggers for Adding Resources:
+## Triggers for Adding/Removing Resources:
 1. Basic Health Check: A basic HTTP request to / should respond with 200 OK. If it does not, the instance is not considered healthy. This check runs on all instances within the AutoScaling group.
 
 2. High CPU Utilization Check: A CloudWatch check that is monitoring one instance in the AutoScaling group. When CPU Utilization is greater than 80% for 2 consecutive minutes a scale-up event is triggered, launching another instance.
