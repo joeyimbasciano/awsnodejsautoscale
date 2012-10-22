@@ -17,4 +17,4 @@ if [ "$?" == "1" ]; then
 fi
 
 echo "Running AutoScaling Proof of Concept"
-$CMD -c1 -t10M nodeload.catsatemybacon.net/?count=$COUNT
+$CMD -c1 -t10M nodeload.example.net/?count=$COUNT
